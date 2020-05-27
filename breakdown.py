@@ -65,9 +65,9 @@ def rename_pdfs(extraced_pdf_folder, rename_folder):
 
 
 # parameter variables
-root_dir = r"/source-files-here"
-extract_to = r"/extract"
-rename_to = r"/rename"
+root_dir = os.path.dirname(os.path.abspath(__file__))+"/source-files-here"
+extract_to = os.path.dirname(os.path.abspath(__file__))+"/extract"
+rename_to = os.path.dirname(os.path.abspath(__file__))+"/rename"
 expression = "[BX]+[\dA-Z]{9}"
 
 if not os.path.exists(root_dir):
