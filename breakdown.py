@@ -6,6 +6,7 @@
 import os
 import PyPDF2
 import re
+import progressbar
 
 # function to extract the individual pages from each pdf found
 
@@ -14,7 +15,6 @@ def split_pdf_pages(root_directory, extract_to_folder):
     # traverse down through the root directory to sub-directories
     for root, dirs, files in os.walk(root_directory):
         for filename in files:
-            print(filename)
             basename, extension = os.path.splitext(filename)
             # if a file is a pdf
             if extension == ".pdf":
@@ -25,7 +25,8 @@ def split_pdf_pages(root_directory, extract_to_folder):
                 opened_pdf = PyPDF2.PdfFileReader(open(fullpath, "rb"))
 
                 # for each page in the pdf
-                for i in range(opened_pdf.numPages):
+                print("extracting \""+filename+ "\" ...")
+                for i in progressbar.progressbar(range(opened_pdf.numPages)):
                     # write the page to a new pdf
                     output = PyPDF2.PdfFileWriter()
                     output.addPage(opened_pdf.getPage(i))
@@ -37,8 +38,9 @@ def split_pdf_pages(root_directory, extract_to_folder):
 
 def rename_pdfs(extraced_pdf_folder, rename_folder):
     # traverse down through the root directory to sub-directories
+    print("renaming all...")
     for root, dirs, files in os.walk(extraced_pdf_folder):
-        for filename in files:
+        for filename in progressbar.progressbar(files):
             basename, extension = os.path.splitext(filename)
             # if a file is a pdf
             if extension == ".pdf":
